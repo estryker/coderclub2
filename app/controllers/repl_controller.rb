@@ -1,0 +1,2 @@
+class ReplController < ApplicationController
+end
