@@ -10,25 +10,48 @@
       &nbsp
     </div>
     <div class="row" >
-      <div id="Description" class="col-md-9">
-        <h3> Welcome to CoderClub! Use this site to start to learn how to program using Ruby.  </h3>
+      <div id="Description" class="col-md-12">
+        <h4> Welcome to CoderClub! Use this site to start to learn how to program using Blockly, Ruby, and Javascript.  </h4>
       </div>
     </div>
     <div class="row" >
       &nbsp
     </div>
     <div class="row" id="wrapper">
-        <div class="col-md-3 text-right">
-          <span class="pull-right">
-            <%= button_to "Try Ruby",try_ruby_path , {:class => "btn btn-danger btn-lg", :method => :get} %>
+        <div class="col-md-6">
+           <%= image_tag "caeser_cipher_code.png", width:"90%"%>
+        </div>
+         <div class="col-md-6">
+         <h6> Try your hand at Ruby code, right in your browser! There is example code on the right of the page that you can inject into your code window to help you along. </h6>
+         &nbsp 
+          <span >
+            <%= button_to "Try Ruby",try_ruby_path , {:class => "btn btn-danger btn-md", :method => :get} %>
           </span>
         </div>
-        <div class="col-md-3 text-middle">
-          <%= button_to "Turtle Graphics", turtle_draw_path , {:class => "btn btn-danger btn-lg", :method => :get} %>
+    </div>
+    <hr />
+    <div class="row" id="wrapper">
+        <div class="col-md-6">
+           <%= image_tag "ruby_turtle_screenshot.png", width:"90%"%>
         </div>
-        <div class="col-md-3 text-left">
-          <span class="pull-left">
-            <%= button_to "Lessons",lessons_path , {:class => "btn btn-danger btn-lg", :method => :get} %>
+        <div class="col-md-6 "> 
+        <h6> Turtle let's you draw shapes using Ruby code. Get the feel for loops and functions as you draw. </h6>
+        &nbsp
+          <span >
+          <%= button_to "Turtle Graphics", turtle_draw_path , {:class => "btn btn-danger btn-md", :method => :get} %>
+          </span>
+        </div>
+    </div> 
+    <hr />
+    <div class="row" id="wrapper">
+        <div class="col-md-6"> 
+          <%= image_tag "coderclub_lessons_screenshot.png", width:"90%"%>
+        </div>
+        <div class="col-md-6 ">
+        <h6> The lessons on this site are designed to be delivered in the classroom, with a combination of hands on activities, coding examples, guided lessons, and self guided exercises. Concepts are introduced with Blockly, then reinforced with Ruby and Javascript.</h6> 
+         &nbsp
+          <span >
+            <%= button_to "Lessons",lessons_path , {:class => "btn btn-danger btn-md", :method => :get} %>
           </span>
         </div>
     </div>
