@@ -38,29 +38,49 @@
  
       <div class="collapse navbar-collapse" id="navbarSupportedContent" >
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
+
+        <li class="nav-item" ><%= link_to "TryRuby", try_ruby_path, class: 'nav-link' %> </li>
+        <li class="nav-item" ><%= link_to "Turtle", turtle_draw_path, class: 'nav-link' %></li>
+        <li class="nav-item" ><%= link_to "Lessons", lessons_path, class: 'nav-link' %></li>
+        <% if signed_in? %>
+            <li class="nav-item" >
+              <%= link_to "Profile/Signout", current_user, class: 'nav-link' %>
+            </li>
+            <li class="nav-item" >
+              <%= link_to "GithubFiles", "/github/myfiles", class: 'nav-link' %>
+            </li>
+         <% else %>
+           <li class="nav-item" >
+              <%= link_to "Login/Signup", signin_path, class: 'nav-link' %>
+           </li>
+         <% end %>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ruby links <span class="caret"></span></a>
+          <div class="dropdown-menu" role="menu">
+            <a class="dropdown-item" href="http://kidsruby.com/"> Kids Ruby </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="http://tryruby.org">Try Ruby</a>
+            <a class="dropdown-item" href="http://opalrb.org/try/#">Try Ruby2</a>
+            <a class="dropdown-item" href="http://www.tutorialspoint.com/ruby/index.htm">Ruby Tutorial</a>
+            <a class="dropdown-item" href="http://jruby.org/tryjruby">JRuby Applet</a>
+            
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.bloc.io/ruby-warrior/#/">Ruby Warrior Game</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="http://ruby-doc.org/">Ruby Documentation </a>
+          </div>
+        </li>
+
         </ul> 
       </div>
     </nav>
     <%= yield %>
+
+    <div class="card-footer text-muted "> <!-- fixed-bottom -->
+      <div class="row" id="wrapper">
+      
+      </div>
+   </div>
+
   </body>
 </html>
