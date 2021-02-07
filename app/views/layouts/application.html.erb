@@ -74,8 +74,13 @@
         </ul> 
       </div>
     </nav>
-    <%= yield %>
-
+    <div class="container">
+     <div class="card border-0 shadow my-5" >
+      <div class="card-body p-3 " style="height: 100%; width:100%" >
+       <%= yield %>
+      </div>
+    </div>
+   </div>
     <div class="card-footer text-muted "> <!-- fixed-bottom -->
       <div class="row" id="wrapper">
       
