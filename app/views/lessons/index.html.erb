@@ -1,0 +1,16 @@
+<div class="container">
+  <h2> Lessons </h2>
+  These lessons can be used in a classroom setting to help students bridge the gap between Blockly programming and text based programming with Ruby.
+  <br>
+  <i> For those interested, these lessons can be run on Jupyter notebooks/JupyterHub</i>
+  <br>
+  &nbsp
+  <% @lesson_files.sort.each do | fname | %>
+  <div class="row">
+    <div class="col-md-6">
+      <%= link_to lesson_link_name(fname), "/lessons/#{fname}" %>
+    </div>
+  </div>
+  <% end %>
+</div>
+  &nbsp

@@ -1,0 +1,16 @@
+<h2>Sign <%= signed_in_to?('github') ? "Out " : "In "  %> </h2>
+
+<div class="container">
+<div class="col-sm col-sm-10">
+ <%= image_tag('github-logo.small.png') %> &nbsp 
+  <% if  signed_in_to? 'github' %>
+   <%= link_to "Sign out", signout_path + "/github", :method=>:delete %>
+  <% else %>
+   <%= link_to "Sign In", '/auth/github', class: "btn btn-primary" %>
+  <% end  %>
+</div>
+</div>
+
+&nbsp
+<h5> <i> Want to learn more about Github? click <%= link_to "here", "https://github.com/" %> </i> </h5>
+&nbsp

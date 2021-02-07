@@ -1,0 +1,8 @@
+<div class="container">
+
+<% if github_user && ! github_user.empty? %>
+  <%= link_to "Open in CoderClub Notebook", @notebook_url, {:class => "btn btn-primary btn-lg", :method => :get} %>
+<% end %>
+  
+<%= render "lessons/#{@html_name}" %>
+</div>

@@ -1,0 +1,211 @@
+<script>
+  // inject code to the code text area
+  function injectCode(extra_code) {
+    myCodeMirror.setValue(myCodeMirror.getValue() + "\n" + extra_code);
+  }
+</script>
+
+<div class="container">
+  <div class="page-header"><h1>Ruby Turtle!</h1></div>
+  
+  <div class="row" id="wrapper">
+    <div id="editor_wrapper" class="col-md-6"> 
+      <%= form_tag('/turtle/draw/save', method: 'post') do    -%> 
+      <textarea cols="50" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
+      <!-- First CodeMirror for the actual editor-->
+      <script> var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "ruby", lineNumbers: true, theme: "midnight" });
+      </script>
+      <!-- Second CodeMirror for all examples in help -->
+      <script> 
+	$('example').each(function() {
+        var $this = $(this),
+        $example = $this.html();
+ 
+        $this.empty();
+	
+        var examplesCodeMirror = CodeMirror.fromTextArea(this, {
+        value: $example,
+	mode: "ruby", 
+        lineNumbers: true, 
+        theme: "midnight",
+        readOnly: true
+        });
+        });
+      </script>
+      <script>
+        // call this each time a piece of code is run so that new code doesn't appear below an old URL
+        function eraseFlash() {
+          flash = document.getElementById("flash_message");
+          if(flash != null) {
+          flash.innerHTML = "";
+          }
+        }
+      </script>
+
+      <input name="commit" class="btn btn-primary" onclick="Opal.Opal.$turtle_exec(myCodeMirror.getValue()); eraseFlash()" type="button" value="Draw! " />
+     <%= submit_tag("Create URL", class: 'btn', type: 'submit')  %> 
+     <% end -%>
+    </div>
+
+    <div class="col-md-6">
+      <div role="tabpanel">
+	
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active" ><a href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">Drawing</a></li>
+          <li role="presentation" ><a href="#examples-tab" aria-controls="examples-tab" role="tab" data-toggle="tab">Examples</a></li>
+        </ul>
+	
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="canvas-tab">
+            <div id="output" class="well" style="padding:0">
+              <canvas id="mycanvas" height="500" width="800"> </canvas>
+            </div>
+          </div>
+	  
+	  <% 
+	     turtle_map = { 
+	     "Polygons" => 
+	  [
+	  %Q{
+# Draw a square
+colors = %w[red orange yellow green]
+Turtle.draw do
+   4.times do | i |
+     pencolor colors[i]
+     forward 100
+     turnright 90
+   end
+end
+},
+	  %Q{
+# Draw a hexagon
+colors = %w[red orange yellow green blue purple]
+Turtle.draw do
+   6.times do | i |
+     pencolor colors[i]
+     forward 100
+     turnright 60
+   end
+end
+},
+	  %Q{
+# Draw regular polygons
+def poly(num_sides,distance=50)
+  if num_sides < 3 
+    return
+  end
+  num_sides = num_sides.to_i
+  
+  colors = %w[red orange yellow green blue indigo violet]
+  
+  num_sides.to_i.times do | i |
+    pencolor colors[i % 7]
+    forward distance
+    turnright 360.0 / num_sides
+   end
+end
+
+Turtle.draw do
+   poly(7)
+   poly(10)
+   poly(12)
+end
+}
+	  ],
+	  "Misc" => 
+	  [
+	  %Q{
+# Draw a flower
+Turtle.draw do
+  def square(size,color)
+    pencolor color
+     4.times do | i |
+       
+       forward size
+       turnright 90
+     end
+  end
+  
+  def petal(size,color)
+    pencolor color
+    2.times do
+      forward size
+      turnright 30
+      forward size
+      turnright 150
+    end
+  end
+  def flower(size: 50,num_petals: 12,color: "red")
+    num_petals.times do 
+      petal(size,color)
+      turnright 360.0 / num_petals
+    end
+  end
+  square(50, "brown")
+  turnright 90
+  jump 25
+  turnleft 90
+  jump 50
+  pencolor "green"
+  forward 100
+  
+  flower(num_petals: 12,color: "red", size: 40)
+end
+},
+	  %Q{
+# fun with squares
+Turtle.draw do
+  def square(size)
+   colors = %w[red orange yellow green]
+   4.times do | i |
+     pencolor colors[i]
+     forward size.to_i
+     turnright 90
+   end
+  end
+  10.times do 
+    square 50
+    turnright 36
+    jump 10
+  end
+end
+}
+	  ]
+	  }
+	  %>
+
+	  <div role="tabpanel" class="tab-pane" id="examples-tab">
+            <% turtle_map.each do | category, code_array | %>
+	    <h3> <%= category %> </h3> 
+	    <% code_array.each do | code_snippet | 
+	       div_id = "code_example_#{code_snippet.object_id}" %>
+            <div class="row">
+	      <div class="col-md-10">
+		<pre> 
+		  <%= code_snippet %>
+		</pre>
+		
+		<script>
+		  code_string_<%=code_snippet.object_id %> = '<%= raw code_snippet.gsub("\n",'\n') %>'
+		  console.log('<%= raw code_snippet.gsub("\n",'\n') %>')
+		</script>
+	      </div>
+	      <div class="col-md-2">
+		<input name="commit" class="btn" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
+	      </div>
+	    </div> <!-- end row for example -->
+	    <% end # code_array.each %>
+	    <% end # turtle_map.each %>
+	  </div>  <!-- end tabpanel -->
+	  
+	</div>
+      </div>
+    </div> 
+    <div id="code_output">
+    </div>
+  </div>
+</div>
+
+

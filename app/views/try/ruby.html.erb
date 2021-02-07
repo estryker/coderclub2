@@ -1,0 +1,303 @@
+<script>
+  // inject code to the code text area
+  function injectCode(extra_code) {
+    myCodeMirror.setValue(myCodeMirror.getValue() + "\n" + extra_code);
+  }
+</script>
+<!-- https://jqueryui.com/dialog/#modal-form -->
+<script>
+$(function () {
+  var dialog;
+  function selectFile() {
+    var modalFormInput = document.getElementById("githubRadioButtons");
+    var githubFileName = '';
+    var newFileName = '';
+    var newFile = false;
+    for (var i = 0, length = modalFormInput.length; i < length; i++) {
+      if(modalFormInput[i].checked) {
+        // alert(modalFormInput[i].value);
+	if(modalFormInput[i].value == "on") {
+          newFile = true;
+        } else {
+          githubFileName = modalFormInput[i].value;
+        }
+        
+      }else if(modalFormInput[i].name == "newFileName") {
+        newFileName = modalFormInput[i].value;
+      }
+    }
+    if(newFile) {
+      githubFileName = newFileName;
+    }
+    console.log("Selecting: " + githubFileName);
+    var githubInput = document.getElementById("githubFileName");
+    githubInput.value = githubFileName;
+    return true;
+  }
+  dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Select File": function(){
+                        $(this).dialog('close');
+                        selectFile(); 
+                        document.getElementById("code_form").submit();
+                    },
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      }
+    }); 
+   function getGithubFiles() {
+      $.ajax({
+        url: "/github/myfiles.json",
+        type: "GET",
+        success:  function(event) { 
+          console.log("response from myfiles");
+          console.log(event); 
+
+          var curr_div = document.getElementById("githubRadioButtons");
+          // clear the innner HTML just in case the user brings up the dialog more than once
+          curr_div.innerHTML = "";
+          for(i = 0; i < event['file_name'].length; i++) {          
+             var new_choice = document.createElement('div');
+             var file_name = event['file_name'][i];
+	     if(file_name == '<%= @file_name || '' %>') {
+               new_choice.innerHTML = "<br> <input type='radio' name='fileToEdit' value='"+file_name+ "' checked='checked'> " + file_name ;
+             }else {
+               new_choice.innerHTML = "<br> <input type='radio' id='newFileRadio' name='fileToEdit' value='"+file_name+ "'> " + file_name ;
+             }
+             curr_div.appendChild(new_choice);
+             console.log(file_name);
+           }
+          var new_file_name = document.createElement('div');
+          new_file_name.innerHTML = "<br> <input type='radio' name='fileToEdit',value=''>New File: <input type='text_box' name='newFileName' value='newfile.rb'/> "; 
+          curr_div.appendChild(new_file_name);
+
+          dialog.dialog("open");
+          return true;
+       },
+       failure: function(event) {
+	dialog.dialog( "open");		 
+        alert("couldn't save ...");
+         console.log("failed to get myfile listing");
+	return false;
+       }
+      
+      })
+     return false;
+   }
+  $( "#github-save-button" ).button().on( "click", getGithubFiles); 
+});
+
+</script>
+
+<!-- the modal form for selecting a file to save to on GitHub -->
+<div id="dialog-form" title="Select file to save to on GitHub.">
+   <form id="githubRadioButtons">
+    
+   </form>
+</div>
+ 
+<div class="container">
+  <div class="page-header"><h1>Ruby!</h1></div>
+  <div id="editor_wrapper" class="col-md-6">
+    <div class="row" id="wrapper">
+      <%= form_tag('/try/ruby/save', method: 'post', id: 'code_form') do -%> 
+       <%=  hidden_field_tag "githubFileName" %>
+      
+      <textarea cols="50" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
+
+
+      <script> 
+	function codeMirrorLoaded(){
+	  console.log("code mirror loaded");
+	}
+	var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "ruby", lineNumbers: true, theme: "midnight", onLoad: codeMirrorLoaded()});
+	myCodeMirror.refresh()
+      </script>
+      
+      <!-- don't seem to need this
+	   <script>
+	     function replaceFormContents(new_text) {
+	     code_text_area = document.getElementById("coder");
+	     code_text_area.innerHTML = new_text;
+	     }
+	   </script>
+           --> 
+      <script>
+        // call this each time a piece of code is run so that new code doesn't appear below an old URL
+        function eraseFlash() {
+          flash = document.getElementById("flash_message");
+          if(flash != null) {
+            flash.innerHTML = "";
+          }
+        }
+      </script>
+      
+
+      <input name="commit" class="btn btn-primary" onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()" type="button" value="Run! " />
+      
+      <%= submit_tag("Create URL", class: 'btn', type: 'submit')  %> <!-- , onclick: "replaceFormContents(myCodeMirror.getValue())" -->
+
+    <% if signed_in? or not ENV['GITHUB_TEST_USER'].nil? %>
+      <%= submit_tag("SaveToGithub", class: 'btn', type: 'submit',id: "github-save-button")  %> 
+    <% end %>
+    <div id="dynamicFileNames"> </div>
+    
+    <% end -%>      
+    <%= form_tag('/try/ruby/save', method: 'post', :'data-remote' => "true") do -%>     
+    <% end -%>
+      
+      <!-- TODO: if the saveToGithub button is clicked, reveal the hidden parts to this form that allow a file name --> 
+    </div>
+    <div class="row">
+	<h3> Code output: </h3>
+	<div id="code_output">
+	</div>
+    </div>
+  </div> <!-- end col-md-6 -->
+  
+    <% 
+       code_map = 
+       {
+      
+       "DataStructures" => 
+    { 
+    "FixNums" => ["2 + 2", "puts 3/5", "puts 3.0/5"],
+    "Strings" => ["s = \"hello\"","s.length"],
+    "Arrays" => ["a = [1,2,3]", "puts a[0]","puts a[0].class","a.length","a.sample", "b = %w[1,2,3]\nputs a == b\nputs b[0].class"]
+    },
+
+    "FlowControl" => 
+    {
+    
+    "Loops" => [
+    %Q{
+3.times do 
+  puts \"hello\"
+end},
+    %Q{
+3.times do | i | 
+  puts i
+end },
+    %Q{
+(0..10).each {|i| puts i }
+}
+    ],
+    
+    "Conditionals" => [
+    %Q{
+if true
+  puts \"true\"
+end},
+    %Q{
+foo = [true,false].sample
+if foo
+  puts \"foo\"
+else
+  puts \"not foo\"
+end},
+    %Q{
+if 3 < 5
+  puts \"3\"
+elsif 4 > 5
+  puts \"what??\"
+else
+  puts \"whatever\"
+end}
+      ]
+      },
+      "UserInteraction" => 
+      { 
+      "Prompt for Input" => 
+      [
+%Q{
+# warning - this is not standard Ruby! Use "gets" instead.
+name = gets_prompt "What is your name?"
+puts name
+},
+%Q{
+# warning - this is not standard Ruby! Use "gets" instead.
+# The .to_i converts the String to an Integer
+num = gets_prompt("What is your lucky number?").to_i
+puts num
+}
+      ],
+      "Alert Output" => 
+      [
+%Q{
+# warning - this is not standard Ruby! Use "puts" instead.
+puts_alert 'Hello ' + name
+},
+%Q{
+# warning - this is not standard Ruby! Use "puts" instead.
+puts_alert "My lucky number is \#\{num\} too!"
+}
+      ]
+      }
+      }
+      %>
+    
+      <div class="col-md-6">
+	<div role="tabpanel">
+	
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation"  ><a href="#help-tab" aria-controls="help-tab" role="tab" data-toggle="tab">Help</a></li>
+	    <% code_map.keys.each do | tab | %>
+            <li role="presentation" ><a href="#<%= tab %>-tab" aria-controls="<%= tab %>-tab" role="tab" data-toggle="tab"><%= tab %></a></li>
+	    <% end %>
+          </ul>
+
+          <div class="tab-content">	
+	    <div role="tabpanel" class="tab-pane" id="help-tab">
+	      <h3> Getting Started </h3>
+	      See the examples in the other tabs to get you started with some Ruby basics. In the tabs, you can see some examples of Ruby code, and then inject the code into your editor on the left.  
+	      <p>
+		When you are ready to run the code, just click the  <input name="commit" class="btn btn-primary" type="button" value="Run! " /> button to see the output.  The output after the '=>' line is the value of the last expression that was executed. 
+	      <p>
+		If you want to save your code, click the <input name="commit" class="btn " type="button" value="Create URL " /> button, which will give you a URL that you can save off in a file, or send to a friend to see your amazing code!
+		
+		<h3> More advanced Ruby </h3>
+		Once you get through the examples and you want to learn more, try using some of the 'Ruby links' in the links tab at the top of the page. 
+		
+            </div> <!-- end tabpanel -->
+
+
+          <!-- Tab panes -->
+	  <% code_map.each do | tab, category_map | %>
+	  
+          <div role="tabpanel" class="tab-pane" id="<%= tab%>-tab">
+            <% category_map.each do | category, code_array | %>
+	    <h3> <%= category %> </h3> 
+	    <% code_array.each do | code_snippet | 
+	       div_id = "code_example_#{code_snippet.object_id}" %>
+            <div class="row">
+		<div class="col-md-10">
+		  <pre> 
+<%= code_snippet %>
+		  </pre>
+            
+		  <script>
+		    code_string_<%=code_snippet.object_id %> = '<%= raw code_snippet.gsub("\n",'\n') %>'
+		    <!-- console.log('<%= raw code_snippet.gsub("\n",'\n') %>') -->
+		  </script>
+		</div>
+		<div class="col-md-2">
+		  <input name="commit" class="btn" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
+		</div>
+	      </div> <!-- end row for example -->
+	      <% end # code_array.each %>
+	      <% end # category_map.each %>
+	    </div>  <!-- end tabpanel -->
+
+	    <% end # code_map.each%>
+	    
+	  </div> <!-- end tabcontent --> 
+	  
+	</div><!-- end col -->
+      </div> <!-- end row -->
+</div> <!-- end container -->
