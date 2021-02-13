@@ -12,3 +12,19 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
+# Compiler options
+
+# opal config options. from docs here: https://github.com/opal/opal-rails
+Rails.application.config.opal.method_missing           = true
+Rails.application.config.opal.optimized_operators      = true
+Rails.application.config.opal.arity_check              = !Rails.env.production?
+Rails.application.config.opal.const_missing            = true
+Rails.application.config.opal.dynamic_require_severity = :ignore
+
+# Other options
+
+# Send local and instance variables down to the view after converting
+# thier value with `.to_json`
+Rails.application.config.opal.assigns_in_templates = true
+Rails.application.config.opal.assigns_in_templates = :locals # only locals
+Rails.application.config.opal.assigns_in_templates = :ivars # only instance variables

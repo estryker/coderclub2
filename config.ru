@@ -3,4 +3,4 @@
 require_relative "config/environment"
 
 run Rails.application
-Rails.application.load_server
+# I don't know what this does. after downgrade to rails 6 and removing webpack, this fails: Rails.application.load_server
