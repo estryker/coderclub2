@@ -54,3 +54,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
+gem 'opal-webpack-loader', '~> 0.9.11' # use the most recent released version here
+
+# gem 'opal-rails'
+gem 'opal-jquery'
+gem 'codemirror-rails'

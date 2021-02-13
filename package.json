@@ -7,7 +7,9 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "5.2.1",
     "bootstrap": "^4.6.0",
+    "codemirror": "^5.59.2",
     "jquery": "^3.5.1",
+    "opal-webpack-loader": "^0.9.11",
     "popper.js": "^1.16.1",
     "turbolinks": "^5.2.0"
   },

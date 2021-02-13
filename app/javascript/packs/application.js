@@ -10,11 +10,19 @@ import "channels"
 import "bootstrap";
 import "../stylesheets/application"
 
+// import and load opal ruby files
+import init_app from 'opal_loader.rb';
+init_app();
+Opal.load('opal_loader');
+
 document.addEventListener("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()
   $('[data-toggle="popover"]').popover()
 })
  
+require("jquery")
+
+import CodeMirror from 'codemirror';
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
