@@ -61,6 +61,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'bootstrap'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'codemirror-rails'
 # Not sure why this depends on rails < 6.1 ...
 gem 'opal-rails', '>= 1.1.0'
 gem 'opal-jquery'
