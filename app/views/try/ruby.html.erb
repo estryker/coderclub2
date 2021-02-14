@@ -109,18 +109,20 @@ $(function () {
    <div id="editor_wrapper" class="col-md-6">
  <div class="row" id="wrapper">
    
-      <%= form_tag('/try/ruby/save', method: 'post', id: 'code_form') do -%> 
+      <%= form_tag('/try/ruby/save', method: 'post', id: 'code_form', width:"10") do -%> 
        <%=  hidden_field_tag "githubFileName" %>
       
-      <textarea cols="50" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
+      <textarea cols="500" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
 
 
       <script> 
 	function codeMirrorLoaded(){
 	  console.log("code mirror loaded");
 	}
-	var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "ruby", lineNumbers: true, theme: "midnight", onLoad: codeMirrorLoaded()});
-	myCodeMirror.refresh()
+  var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "text/x-ruby", matchBrackets: true, indentUnit: 2, 
+                                                   lineNumbers: true, theme: "rubyblue", onLoad: codeMirrorLoaded()});
+  myCodeMirror.setSize(500,400);
+  myCodeMirror.refresh()
       </script>
       
       <!-- don't seem to need this
@@ -141,8 +143,8 @@ $(function () {
         }
       </script>
       
-
-      <input name="commit" class="btn btn-primary" onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()" type="button" value="Run! " />
+      <!-- onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()"  -->
+      <input name="commitRubyCode" class="btn btn-primary"  type="button" value="Run! " />
       
       <%= submit_tag("Create URL", class: 'btn', type: 'submit')  %> <!-- , onclick: "replaceFormContents(myCodeMirror.getValue())" -->
 

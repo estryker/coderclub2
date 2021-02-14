@@ -5,5 +5,4 @@
 //= require jquery-ui/widgets/dialog
 //= require bootstrap
 //= require turbolinks
-//= require codemirror
 //= require_tree .
