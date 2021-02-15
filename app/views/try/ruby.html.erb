@@ -236,7 +236,7 @@ puts num
       [
 %Q{
 # warning - this is not standard Ruby! Use "puts" instead.
-puts_alert 'Hello ' + name
+puts_alert "Hello " + name
 },
 %Q{
 # warning - this is not standard Ruby! Use "puts" instead.
@@ -263,7 +263,7 @@ puts_alert "My lucky number is \#\{num\} too!"
 	      <p>
 		When you are ready to run the code, just click the  <input name="commit" class="btn btn-primary" type="button" value="Run! " /> button to see the output.  The output after the '=>' line is the value of the last expression that was executed. 
 	      <p>
-		If you want to save your code, click the <input name="commit" class="btn " type="button" value="Create URL " /> button, which will give you a URL that you can save off in a file, or send to a friend to see your amazing code!
+		If you want to save your code, click the <input name="commit" class="btn btn-secondary" type="button" value="Create URL " /> button, which will give you a URL that you can save off in a file, or send to a friend to see your amazing code!
 		
 		<h3> More advanced Ruby </h3>
 		Once you get through the examples and you want to learn more, try using some of the 'Ruby links' in the links tab at the top of the page. 
@@ -280,9 +280,11 @@ puts_alert "My lucky number is \#\{num\} too!"
 	    <% code_array.each do | code_snippet | 
 	       div_id = "code_example_#{code_snippet.object_id}" %>
             <div class="row">
-		<div class="col-md-10">
+		<div class="col-md-8">
 		  <pre> 
-<%= code_snippet %>
+      <code>
+       <%= code_snippet %>
+      </code>
 		  </pre>
             
 		  <script>
@@ -291,7 +293,7 @@ puts_alert "My lucky number is \#\{num\} too!"
 		  </script>
 		</div>
 		<div class="col-md-2">
-		  <input name="commit" class="btn" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
+		  <input name="commit" class="btn btn-secondary" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
 		</div>
 	      </div> <!-- end row for example -->
 	      <% end # code_array.each %>
