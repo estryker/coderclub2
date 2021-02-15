@@ -1,3 +1,3 @@
 Element.find('#commitRubyCode').on :click do
-  puts "codewindow was clicked!"
+  alert "codewindow was clicked!"
 end
