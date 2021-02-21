@@ -1,27 +1,34 @@
 require 'erb'
+require 'opal'
 require 'opal-parser'
-require 'patched_io'
+# require 'patched_io'
 # Console.log and puts do the same thing
 $console.log "hello opal!"
 
 puts "hello world!"
 
-  
-# emulate this from view: onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()
-# https://opalrb.com/docs/guides/v1.0.3/compiled_ruby.html
 def exec_ruby(code)
     puts code
-    # we are scoping our extensions to IO just to this function
-    STDOUT.extend(MyIO)
-    STDERR.extend(MyIO)
-    
+
+    # I noticed that in Opal, that the IO::Writable module defines printing interms of the write_proc, so resetting that to do what I want here
+    STDOUT.write_proc = `function(s){document.getElementById('code_output').innerHTML= document.getElementById('code_output').innerHTML + "<br>" + s; }`
     begin
       res = eval(code)
-      Element['#code_output'].innerHTML= Element['#code_output'].innerHTML + "<br> = &gt;" + ERB::Util.html_escape(res.inspect)
       
+      # This is still the redefined puts
+      puts "=> #{res}" 
     rescue Exception => e
+      puts "<font size=\"3\" color=\"red\">" + e.message + "</font>"
+    ensure
+        STDOUT.write_proc = `function(s){console.log(s)}`
+        puts "in ensure"
     end
+
+    puts "normal puts"
 end
+
+# emulate this from view: onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()
+# https://opalrb.com/docs/guides/v1.0.3/compiled_ruby.html
 
 # Note that we must make sure the Document is loaded before we try to find our button
 Document.ready? do 
@@ -31,20 +38,4 @@ Document.ready? do
     # alert "codewindow was clicked!"
     exec_ruby(`myCodeMirror.getValue()`)
   end
-end
-
-__END__
-puts "hi"
-def exec_ruby(code)
-    begin
-      # $catcher = StringIO.new("",'w') # FakeStdout.new('code_output') # StringIO.new
-      # $stdout = $catcher
-      res = code # eval(code)
-      code_inspect = res.inspect
-      puts code_inspect
-      Element['#code_output'].innerHTML= "</br> " + ERB::Util.html_escape code_inspect     
-    rescue Exception => e
-      code_error = e.message + "\n" + e.backtrace.join("\n")
-      Element['#code_output'].innerHTML= "<font size=\"3\" color=\"red\"> " +  ERB::Util.html_escape code_error + "</font>"
-    end
 end

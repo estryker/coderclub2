@@ -13,9 +13,9 @@
       <%= form_tag('/turtle/draw/save', method: 'post') do    -%> 
       <textarea cols="50" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
       <!-- First CodeMirror for the actual editor-->
-      <script> var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "ruby", lineNumbers: true, theme: "midnight" });
+      <script> var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "ruby", lineNumbers: true, theme: "midnight", onLoad: codeMirrorLoaded() });
       </script>
-      <!-- Second CodeMirror for all examples in help -->
+      <!-- Second CodeMirror for all examples in help 
       <script> 
 	$('example').each(function() {
         var $this = $(this),
@@ -32,6 +32,7 @@
         });
         });
       </script>
+      -->
       <script>
         // call this each time a piece of code is run so that new code doesn't appear below an old URL
         function eraseFlash() {

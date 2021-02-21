@@ -1,96 +1,98 @@
-<script>
+ 
+ <script>
   // inject code to the code text area
   function injectCode(extra_code) {
     myCodeMirror.setValue(myCodeMirror.getValue() + "\n" + extra_code);
   }
 </script>
 <!-- https://jqueryui.com/dialog/#modal-form -->
+<!-- Note that this script uses erb. TODO: make it a bit less kludgey  -->
 <script>
 $(function () {
-  var dialog;
-  function selectFile() {
-    var modalFormInput = document.getElementById("githubRadioButtons");
-    var githubFileName = '';
-    var newFileName = '';
-    var newFile = false;
-    for (var i = 0, length = modalFormInput.length; i < length; i++) {
-      if(modalFormInput[i].checked) {
-        // alert(modalFormInput[i].value);
-	if(modalFormInput[i].value == "on") {
-          newFile = true;
-        } else {
-          githubFileName = modalFormInput[i].value;
-        }
-        
-      }else if(modalFormInput[i].name == "newFileName") {
-        newFileName = modalFormInput[i].value;
-      }
-    }
-    if(newFile) {
-      githubFileName = newFileName;
-    }
-    console.log("Selecting: " + githubFileName);
-    var githubInput = document.getElementById("githubFileName");
-    githubInput.value = githubFileName;
-    return true;
-  }
-  dialog = $( "#dialog-form" ).dialog({
-      autoOpen: false,
-      height: 400,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Select File": function(){
-                        $(this).dialog('close');
-                        selectFile(); 
-                        document.getElementById("code_form").submit();
-                    },
-        Cancel: function() {
-          dialog.dialog( "close" );
+    var dialog;
+    function selectFile() {
+      var modalFormInput = document.getElementById("githubRadioButtons");
+      var githubFileName = '';
+      var newFileName = '';
+      var newFile = false;
+      for (var i = 0, length = modalFormInput.length; i < length; i++) {
+        if(modalFormInput[i].checked) {
+          // alert(modalFormInput[i].value);
+      if(modalFormInput[i].value == "on") {
+            newFile = true;
+          } else {
+            githubFileName = modalFormInput[i].value;
+          }
+          
+        }else if(modalFormInput[i].name == "newFileName") {
+          newFileName = modalFormInput[i].value;
         }
       }
-    }); 
-   function getGithubFiles() {
-      $.ajax({
-        url: "/github/myfiles.json",
-        type: "GET",
-        success:  function(event) { 
-          console.log("response from myfiles");
-          console.log(event); 
-
-          var curr_div = document.getElementById("githubRadioButtons");
-          // clear the innner HTML just in case the user brings up the dialog more than once
-          curr_div.innerHTML = "";
-          for(i = 0; i < event['file_name'].length; i++) {          
-             var new_choice = document.createElement('div');
-             var file_name = event['file_name'][i];
-	     if(file_name == '<%= @file_name || '' %>') {
-               new_choice.innerHTML = "<br> <input type='radio' name='fileToEdit' value='"+file_name+ "' checked='checked'> " + file_name ;
-             }else {
-               new_choice.innerHTML = "<br> <input type='radio' id='newFileRadio' name='fileToEdit' value='"+file_name+ "'> " + file_name ;
+      if(newFile) {
+        githubFileName = newFileName;
+      }
+      console.log("Selecting: " + githubFileName);
+      var githubInput = document.getElementById("githubFileName");
+      githubInput.value = githubFileName;
+      return true;
+    }
+    dialog = $( "#dialog-form" ).dialog({
+        autoOpen: false,
+        height: 400,
+        width: 350,
+        modal: true,
+        buttons: {
+          "Select File": function(){
+                          $(this).dialog('close');
+                          selectFile(); 
+                          document.getElementById("code_form").submit();
+                      },
+          Cancel: function() {
+            dialog.dialog( "close" );
+          }
+        }
+      }); 
+     function getGithubFiles() {
+        $.ajax({
+          url: "/github/myfiles.json",
+          type: "GET",
+          success:  function(event) { 
+            console.log("response from myfiles");
+            console.log(event); 
+  
+            var curr_div = document.getElementById("githubRadioButtons");
+            // clear the innner HTML just in case the user brings up the dialog more than once
+            curr_div.innerHTML = "";
+            for(i = 0; i < event['file_name'].length; i++) {          
+               var new_choice = document.createElement('div');
+               var file_name = event['file_name'][i];
+           if(file_name == '<%= @file_name || '' %>') {
+                 new_choice.innerHTML = "<br> <input type='radio' name='fileToEdit' value='"+file_name+ "' checked='checked'> " + file_name ;
+               }else {
+                 new_choice.innerHTML = "<br> <input type='radio' id='newFileRadio' name='fileToEdit' value='"+file_name+ "'> " + file_name ;
+               }
+               curr_div.appendChild(new_choice);
+               console.log(file_name);
              }
-             curr_div.appendChild(new_choice);
-             console.log(file_name);
-           }
-          var new_file_name = document.createElement('div');
-          new_file_name.innerHTML = "<br> <input type='radio' name='fileToEdit',value=''>New File: <input type='text_box' name='newFileName' value='newfile.rb'/> "; 
-          curr_div.appendChild(new_file_name);
-
-          dialog.dialog("open");
-          return true;
-       },
-       failure: function(event) {
-	dialog.dialog( "open");		 
-        alert("couldn't save ...");
-         console.log("failed to get myfile listing");
-	return false;
-       }
-      
-      })
-     return false;
-   }
-  $( "#github-save-button" ).button().on( "click", getGithubFiles); 
-});
+            var new_file_name = document.createElement('div');
+            new_file_name.innerHTML = "<br> <input type='radio' name='fileToEdit',value=''>New File: <input type='text_box' name='newFileName' value='newfile.rb'/> "; 
+            curr_div.appendChild(new_file_name);
+  
+            dialog.dialog("open");
+            return true;
+         },
+         failure: function(event) {
+      dialog.dialog( "open");		 
+          alert("couldn't save ...");
+           console.log("failed to get myfile listing");
+      return false;
+         }
+        
+        })
+       return false;
+     }
+    $( "#github-save-button" ).button().on( "click", getGithubFiles); 
+  });
 
 </script>
 
@@ -107,15 +109,15 @@ $(function () {
    <hr />
   <div class="row" id="wrapper">
    <div id="editor_wrapper" class="col-md-6">
- <div class="row" id="wrapper">
+     <div class="row" id="wrapper">
    
       <%= form_tag('/try/ruby/save', method: 'post', id: 'code_form', width:"10") do -%> 
-       <%=  hidden_field_tag "githubFileName" %>
+      <%=  hidden_field_tag "githubFileName" %>
       
       <textarea cols="500" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
 
 
-      <script> 
+<script> 
 	function codeMirrorLoaded(){
 	  console.log("code mirror loaded");
 	}
@@ -123,7 +125,7 @@ $(function () {
                                                    lineNumbers: true, theme: "rubyblue", onLoad: codeMirrorLoaded()});
   myCodeMirror.setSize(500,400);
   myCodeMirror.refresh()
-      </script>
+</script>
       
       <!-- don't seem to need this
 	   <script>
@@ -133,7 +135,7 @@ $(function () {
 	     }
 	   </script>
            --> 
-      <script>
+<script>
         // call this each time a piece of code is run so that new code doesn't appear below an old URL
         function eraseFlash() {
           flash = document.getElementById("flash_message");
@@ -141,30 +143,34 @@ $(function () {
             flash.innerHTML = "";
           }
         }
-      </script>
+ </script>
       
       <!-- onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()"  -->
       <input id="commitRubyCode" class="btn btn-primary"  type="button" value="Run! " />
       
       <%= submit_tag("Create URL", class: 'btn', type: 'submit')  %> <!-- , onclick: "replaceFormContents(myCodeMirror.getValue())" -->
 
-    <% if signed_in? or not ENV['GITHUB_TEST_USER'].nil? %>
-      <%= submit_tag("SaveToGithub", class: 'btn', type: 'submit',id: "github-save-button")  %> 
-    <% end %>
-    <div id="dynamicFileNames"> </div>
-    
-    <% end -%>      
-    <%= form_tag('/try/ruby/save', method: 'post', :'data-remote' => "true") do -%>     
-    <% end -%>
+      <% if signed_in? or not ENV['GITHUB_TEST_USER'].nil? %>
+        <%= submit_tag("SaveToGithub", class: 'btn', type: 'submit',id: "github-save-button")  %> 
+      <% end %>
+      <div id="dynamicFileNames"> </div>
+      
+      <% end -%>      
+      <%= form_tag('/try/ruby/save', method: 'post', :'data-remote' => "true") do -%>     
+      <% end -%>
       
       <!-- TODO: if the saveToGithub button is clicked, reveal the hidden parts to this form that allow a file name --> 
-    </div>
+    </div><!-- end row -->
     <div class="row">
-	<h3> Code output: </h3>
-	<div id="code_output">
-	</div>
+      <div class="col-md-6">
+	     <h2> Code output: </h2>
+       <p>
+	       <div id="code_output">
+	       </div>
+       </p>
+      </div>
     </div>
-  </div> <!-- end col-md-6 -->
+  </div> 
   
     <% 
        code_map = 

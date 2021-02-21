@@ -12,6 +12,7 @@ require 'opal_ujs'
 require 'turbolinks'
 
 require 'console'
+
 require 'try'
 
 # a Ruby equivalent of the require_tree Sprockets directive is available

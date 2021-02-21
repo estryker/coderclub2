@@ -3,3 +3,4 @@
 
 //= link application.js
 //= link application.css
+//= link github_helper.js
