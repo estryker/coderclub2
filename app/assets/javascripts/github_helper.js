@@ -1,0 +1,1 @@
+// the github helper script is currently embedded in the ruby.html.erb and uses some .erb to generate the javascript

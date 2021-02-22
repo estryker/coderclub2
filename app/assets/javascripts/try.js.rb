@@ -11,6 +11,7 @@ def exec_ruby(code)
     puts code
 
     # I noticed that in Opal, that the IO::Writable module defines printing interms of the write_proc, so resetting that to do what I want here
+    # and then reset it back in the ensure block 
     STDOUT.write_proc = `function(s){document.getElementById('code_output').innerHTML= document.getElementById('code_output').innerHTML + "<br>" + s; }`
     begin
       res = eval(code)
@@ -31,11 +32,13 @@ end
 # https://opalrb.com/docs/guides/v1.0.3/compiled_ruby.html
 
 # Note that we must make sure the Document is loaded before we try to find our button
-Document.ready? do 
+Document.ready.then do 
   e2 = Element['#commitRubyCode']
   puts e2.inspect
   e2.on :click do
     # alert "codewindow was clicked!"
     exec_ruby(`myCodeMirror.getValue()`)
+    # TODO: turn this into an opal javascript function
+    `eraseFlash()` 
   end
 end
