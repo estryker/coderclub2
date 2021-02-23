@@ -64,7 +64,15 @@ gem 'bootstrap'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 # copying stuff in from github project into app/assets
+# I am using include tags instead of sprockets for codemirror and bootstrap at the moment. 
 # gem 'codemirror-rails'
 # Not sure why this depends on rails < 6.1 ...
 gem 'opal-rails', '>= 1.1.0'
 gem 'opal-jquery'
+
+# for rendering markdown partials. High voltage does the static pages, markdown-rails does the markdown conversion
+# Note, you will need config/initializers/high_voltage.rb and a file called: app/views/layouts/blank_layout.html.erb
+# Without markdown-rails, the static .md files won't be rendered.  
+gem 'high_voltage', '~>3.1'
+gem 'markdown-rails'
+
