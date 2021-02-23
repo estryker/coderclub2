@@ -9,7 +9,9 @@ require 'jquery-ui'
 require 'opal_ujs'
 
 # Require of JS libraries will be forwarded to sprockets as is
-require 'turbolinks'
+# page loading is behaving oddly, so I'm turning off turbolinks. 
+# if navigating directly to a page, the Opal eval works, if clicking a link on the navbar, it doesnt
+# require 'turbolinks'
 
 require 'console'
 
