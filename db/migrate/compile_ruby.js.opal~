@@ -1,0 +1,4 @@
+puts "In compile_ruby" # check the console!
+
+# Dom manipulation
+require 'opal'

@@ -1,0 +1,70 @@
+puts "In execute_ruby" # check the console!
+require 'opal'
+
+class Turtle
+    # Make a class method called start / aliased to draw
+    # This will create a new instance of Turtle, then evaluate it
+    # with the given block called script.  This is what gives us
+    # the syntax sugar that Python just will never have
+    @@Rad = Math::PI / 180.0
+
+    class << self
+      def start(&script)
+        t = self.new
+        t.instance_eval(&script)
+        t.draw
+      end
+
+      alias_method :draw, :start
+    end
+
+    def initialize
+      @canvas = Element.find('#canvas').get(0)
+      @dir = 0
+    end
+
+    def draw
+      #add_command "draw();"
+      #send_commands
+      @canvas.draw
+    end
+
+    def to_radian(degree)
+      return degree * @@Rad;
+    end
+
+    def forward(num)
+      rad = to_radian(@dir)
+      self.x += r * Math::cos(rad)
+      self.y += r * Math::sin(rad)  
+      @canvas.line_to(self.x, self.y)
+    end
+
+    def backward(distance)
+      turn(180)
+      forward(distance)
+    end
+    
+    def turn(degrees)
+      @dir += deg;
+      @dir = @dir % 360;
+    end
+    
+    def turnleft(degrees)
+      turn(-1*degrees.abs)
+    end
+
+    def turnright(degrees)
+      turn(degrees.abs)
+    end
+
+    # ex: 2
+    def pensize(size)
+      @canvas.lineWidth = size
+    end
+    
+    # ex: yellow
+    def pencolor(color)
+      @canvas.strokeStyle = color
+    end
+  end

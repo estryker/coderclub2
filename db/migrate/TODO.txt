@@ -1,0 +1,7 @@
+* make better links
+* provide code samples and basic documentation, with links to more complete docs
+* be able to share a link to code, bring up other's code, etc
+* add user log in via google/facebook/twitter.  save docs with google? have a coderclub omniauth provider?
+* develop a basic game creation platform, perhaps stealing from gosu
+* integrate with angry birds blockly stuff??
+* integrate a ticketing system so students can get help from experts. 
