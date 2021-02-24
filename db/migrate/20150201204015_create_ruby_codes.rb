@@ -1,4 +1,4 @@
-class CreateRubyCodes < ActiveRecord::Migration
+class CreateRubyCodes < ActiveRecord::Migration[6.0]
   def change
     create_table :ruby_codes do |t|
       t.string :url_id

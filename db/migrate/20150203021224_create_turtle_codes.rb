@@ -1,4 +1,4 @@
-class CreateTurtleCodes < ActiveRecord::Migration
+class CreateTurtleCodes < ActiveRecord::Migration[6.0]
   def change
     create_table :turtle_codes do |t|
       t.string :url_id
