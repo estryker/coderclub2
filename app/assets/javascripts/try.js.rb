@@ -35,10 +35,14 @@ end
 Document.ready.then do 
   e2 = Element['#commitRubyCode']
   puts e2.inspect
-  e2.on :click do
+
+  e2.on :click do | evt |
+    # I don't know why this doesn't work:
+    #Element['#code_output'].innerHTML = ""
+    `document.getElementById('code_output').innerHTML = ""`
     # alert "codewindow was clicked!"
     exec_ruby(`myCodeMirror.getValue()`)
-    # TODO: turn this into an opal javascript function
+    # TODO: turn this into an opal javascript function?
     `eraseFlash()` 
   end
 end
