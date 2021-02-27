@@ -6,7 +6,7 @@ require 'jquery'
 require 'jquery-ui'
 
 # For Rails 5.1 and above, otherwise use 'opal_ujs'
-require 'opal_ujs'
+# deprecated: require 'opal_ujs'
 
 # Require of JS libraries will be forwarded to sprockets as is
 # page loading is behaving oddly, so I'm turning off turbolinks. 
