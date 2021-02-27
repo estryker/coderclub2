@@ -102,6 +102,11 @@ $(function () {
     
    </form>
 </div>
+ <div id="help-form" title="Help">
+   <form id="helpPage">
+    
+   </form>
+</div>
  
 <div class="container"> 
 
@@ -148,7 +153,8 @@ $(function () {
       <!-- onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()"  -->
       <input id="commitRubyCode" class="btn btn-primary"  type="button" value="Run! " />
       
-      <%= submit_tag("Create URL", class: 'btn', type: 'submit')  %> <!-- , onclick: "replaceFormContents(myCodeMirror.getValue())" -->
+      <%= submit_tag("Create URL", class: 'btn btn-secondary', type: 'submit')  %> <!-- , onclick: "replaceFormContents(myCodeMirror.getValue())" -->
+      <input id="rubyHelp" class="btn btn-secondary"  type="button" value="Help " />
 
       <% if signed_in? or not ENV['GITHUB_TEST_USER'].nil? %>
         <%= submit_tag("SaveToGithub", class: 'btn', type: 'submit',id: "github-save-button")  %> 

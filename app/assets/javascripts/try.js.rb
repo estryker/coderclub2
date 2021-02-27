@@ -28,6 +28,24 @@ def exec_ruby(code)
     puts "normal puts"
 end
 
+
+def ruby_help
+    help_dialog = Element["#help-form"].dialog(
+        autoOpen: false,
+        height: 400,
+        width: 350,
+        modal: true,
+        buttons: {
+          Cancel: %x{ function() {
+            help_dialog.dialog( "close" );
+          }
+        }
+      }); 
+
+
+      help_dialog.dialog("open")
+end
+
 # emulate this from view: onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()
 # https://opalrb.com/docs/guides/v1.0.3/compiled_ruby.html
 
@@ -45,4 +63,10 @@ Document.ready.then do
     # TODO: turn this into an opal javascript function?
     `eraseFlash()` 
   end
+
+  help_button = Element['#rubyHelp']
+  help_button.on :click do 
+    ruby_help
+  end
+
 end
