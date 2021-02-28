@@ -2,7 +2,6 @@ require 'erb'
 require 'opal'
 require 'opal-parser'
 require 'browser'
-require 'help_code'
 
 # require 'patched_io'
 # Console.log and puts do the same thing
