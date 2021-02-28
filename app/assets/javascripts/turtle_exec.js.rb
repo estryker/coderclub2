@@ -7,9 +7,9 @@ class Turtle
   @@Rad = Math::PI / 180.0
   def initialize
     @dir = -90
-    @x = 200
-    @y = 200
-    @speed = 100
+    @x = 250
+    @y = 250
+    @speed = 1000
 
     # this.tag = document.getElementById(tag) || tag;
     
@@ -38,7 +38,7 @@ class Turtle
      context = canvas.getContext("2d");
      context.clearRect( 0 , 0 , canvas.width, canvas.height);
      context.beginPath();
-     context.moveTo(#{@x},#{@x});
+      // context.moveTo(#{@x},#{@x});
      console.log(#{self.to_s});
      }
   end
@@ -63,7 +63,7 @@ class Turtle
     # drawing commands using the stroke() method
     # t.draw! 
 
-    t.close!
+    # t.close!
   end
 
   # opal doesn't seem to alias this well. 
@@ -80,8 +80,11 @@ class Turtle
   end
 
   def begin_path
-    `console.log( "begin path" )`
-    `document.getElementById("mycanvas").getContext("2d").beginPath()`
+    %x{console.log( "begin path" );
+     document.getElementById("mycanvas").getContext("2d").beginPath();
+     context.moveTo(self.x,self.y);
+     console.log("starting at " + self.x + "," + self.y);
+    }
   end
   
   def close!
@@ -103,7 +106,7 @@ class Turtle
     end
     #`console.log("beginning")`
     # self.begin_path
-   `console.log("closing")`
+   `console.log("done drawing")`
     # self.close
   end
 
@@ -146,6 +149,13 @@ class Turtle
       `document.getElementById("mycanvas").getContext("2d").moveTo(x, y)`
     end
   end
+ 
+  def jump(distance)
+     p = @pen
+     @pen = false
+     forward(distance)
+     @pen = p 
+  end
 
     # note that this is kidsruby's name.  goto by turtlewax is around too
   def goto(x, y)
@@ -168,15 +178,17 @@ class Turtle
 
   def speed(num)
     s = num.to_i
-    if(s < 0 || s > 100)
+    if(s < 0 || s > 1000)
       `console.warn("bad speed given, setting to 100")`
-      @speed = 100
+      @speed = 1000
     else
       @speed = s
       `console.info("setting speed to " + #{s})`
     end
   end
   def forward(distance)    
+    `console.log( "beginning a new path")`
+    begin_path
     `console.log( "forward")`
     `console.log( #{distance})`
     a = toRad(@dir)
@@ -186,12 +198,13 @@ class Turtle
     if @pen
       `console.log( "lineto" )`
       `document.getElementById("mycanvas").getContext("2d").lineTo(#{@x}, #{@y})`
-      self.draw!
     else
       `console.log( "moveto" )`
       `document.getElementById("mycanvas").getContext("2d").moveTo(#{@x}, #{@y})`
     end
-    sleep(100 - @speed)
+          
+    draw!
+    sleep(1000 - @speed)
   end
 
   def backward(distance)
