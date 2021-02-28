@@ -70,6 +70,7 @@ gem 'jquery-ui-rails'
 # Not sure why this depends on rails < 6.1 ...
 gem 'opal-rails', '>= 1.1.0'
 gem 'opal-jquery'
+gem 'opal-browser'
 
 # for rendering markdown partials. High voltage does the static pages, markdown-rails does the markdown conversion
 # Note, you will need config/initializers/high_voltage.rb and a file called: app/views/layouts/blank_layout.html.erb
