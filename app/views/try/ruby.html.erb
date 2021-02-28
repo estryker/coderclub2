@@ -53,12 +53,12 @@ end}
       "Prompt for Input" => 
       [
 %Q{
-# warning - this is not standard Ruby! Use "gets" instead.
-name = gets_prompt "What is your name?"
+# warning - this is not standard Ruby! Use "gets" when using Ruby in a console.
+name = $$.prompt "What is your name?"
 puts name
 },
 %Q{
-# warning - this is not standard Ruby! Use "gets" instead.
+# warning - this is not standard Ruby! Use "gets" when using Ruby in a console.
 # The .to_i converts the String to an Integer
 num = gets_prompt("What is your lucky number?").to_i
 puts num
@@ -67,12 +67,12 @@ puts num
       "Alert Output" => 
       [
 %Q{
-# warning - this is not standard Ruby! Use "puts" instead.
-puts_alert "Hello " + name
+# warning - this is not standard Ruby! Use "puts" when using Ruby in a console.
+$$.alert "Hello " + name
 },
 %Q{
-# warning - this is not standard Ruby! Use "puts" instead.
-puts_alert "My lucky number is \#\{num\} too!"
+# warning - this is not standard Ruby! Use "puts" when using Ruby in a console.
+$$.alert "My lucky number is \#\{num\} too!"
 }
       ]
       }
@@ -191,14 +191,13 @@ $(function () {
         modal: true,
         buttons: {
           
-          Cancel: function() {
+          Close: function() {
             dialog.dialog( "close" );
           }
         }
       }); 
-      function helpModal() {
-         
-         dialog.dialog("open");
+      function helpModal() {       
+        dialog.dialog("open");
         return true;
       } 
       $( "#rubyHelp" ).button().on( "click", helpModal); 
@@ -211,21 +210,26 @@ $(function () {
 		     When you are ready to run the code, just click the  <input name="commit" class="btn btn-primary" type="button" value="Run! " /> button to see the output.  The output after the '=>' line is the value of the last expression that was executed. 
 	     </p>
 	      If you want to save your code, click the <input name="commit" class="btn btn-secondary" type="button" value="Create URL " /> button, which will give you a URL that you can save off in a file, or send to a friend to see your amazing code!
-		
+		   <p>
+         &nbsp
+       </p>
 	     <h3> More advanced Ruby </h3>
 	      	Once you get through the examples and you want to learn more, try using some of the 'Ruby links' in the links tab at the top of the page. 
-	  	    
+	  	  <p>
+         &nbsp
+       </p>
      <% code_map.each do | tab, category_map | %>
-       <% category_map.each do | category, code_array | %>
+       <% category_map.each do | category, code_array | %> 
+          &nbsp 
 	       <h3> <%= category %> </h3> 
 	        <% code_array.each do | code_snippet | 
 	          div_id = "code_example_#{code_snippet.object_id}" %>
           <div class="row">
 		        <div class="col-md-8">
 		        <pre> 
-            <code>
-            <%= code_snippet %>
-            </code>
+<code>
+<%= code_snippet %>
+</code>
 		        </pre>
             
 		        <script>
@@ -249,15 +253,23 @@ $(function () {
   <div class="page-header"><h1>Ruby!</h1></div>
    <hr />
   <div class="row" id="wrapper">
-   <div id="editor_wrapper" class="col-md-6">
-     <div class="row" id="wrapper">
+   <div id="editor_wrapper" class="col-md-6"> 
+     
    
       <%= form_tag('/try/ruby/save', method: 'post', id: 'code_form', width:"10") do -%> 
       <%=  hidden_field_tag "githubFileName" %>
       
       <textarea cols="500" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
 
-
+   </div>
+   <div class="col-md-6 " style="height: 450px; overflow-y: auto;">
+	     <h2> Code output: </h2>
+       <p>
+	       <div id="code_output"  class="card-body p-3"  > 
+	       </div>
+       </p>
+    </div>
+  </div>
 <script> 
 	function codeMirrorLoaded(){
 	  console.log("code mirror loaded");
@@ -285,7 +297,7 @@ $(function () {
           }
         }
  </script>
-      
+      <div class="row" id="wrapper">
       <!-- onclick="Opal.Opal.$ruby_exec(myCodeMirror.getValue()); eraseFlash()"  -->
       <input id="commitRubyCode" class="btn btn-primary"  type="button" value="Run! " />
       
@@ -302,85 +314,11 @@ $(function () {
       <% end -%>
       
       <!-- TODO: if the saveToGithub button is clicked, reveal the hidden parts to this form that allow a file name --> 
+   
+    
+      
     </div><!-- end row -->
-    <div class="row">
-      <div class="col-md-6">
-	     <h2> Code output: </h2>
-       <p>
-	       <div id="code_output">
-	       </div>
-       </p>
-      </div>
-    </div>
   </div> 
   
   
-    <!-- <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a href="#home" class="nav-link active" data-toggle="tab">Home</a>
--->
-      <div class="col-md-6">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item" role="presentation"  >
-              <a class='nav-link' href="#help-tab" aria-controls="help-tab" role="tab" data-toggle="tab">Help</a>
-            </li>
-	        <% code_map.keys.each do | tab | %>
-            <li class="nav-item" role="presentation" >
-              <a class='nav-link' href="#<%= tab %>-tab" aria-controls="<%= tab %>-tab" role="tab" data-toggle="tab"><%= tab %></a>
-            </li>
-	        <% end %>
-          </ul>
-
-      <div class="tab-content">	 
-      
-	      <div  class="tab-pane" id="help-tab"> 
-          <div class="container">
-	        <h3> Getting Started </h3>
-	         See the examples in the other tabs to get you started with some Ruby basics. In the tabs, you can see some examples of Ruby code, and then inject the code into your editor on the left.  
-	        <p>
-		      When you are ready to run the code, just click the  <input name="commit" class="btn btn-primary" type="button" value="Run! " /> button to see the output.  The output after the '=>' line is the value of the last expression that was executed. 
-	        </p>
-	      	If you want to save your code, click the <input name="commit" class="btn btn-secondary" type="button" value="Create URL " /> button, which will give you a URL that you can save off in a file, or send to a friend to see your amazing code!
-		
-	      	<h3> More advanced Ruby </h3>
-	      	Once you get through the examples and you want to learn more, try using some of the 'Ruby links' in the links tab at the top of the page. 
-	  	    </div> <!-- end container -->
-        </div> <!-- end tab-pane -->
-
-          <!-- Dynamic Tab panes -->
-	    <% code_map.each do | tab, category_map | %>
-	  
-        <div  class="tab-pane" id="<%= tab%>-tab">
-          <% category_map.each do | category, code_array | %>
-	        <h3> <%= category %> </h3> 
-	        <% code_array.each do | code_snippet | 
-	          div_id = "code_example_#{code_snippet.object_id}" %>
-          <div class="row">
-		        <div class="col-md-8">
-		        <pre> 
-            <code>
-            <%= code_snippet %>
-            </code>
-		        </pre>
-            
-		        <script>
-		        code_string_<%=code_snippet.object_id %> = '<%= raw code_snippet.gsub("\n",'\n') %>'
-		        console.log('<%= raw code_snippet.gsub("\n",'\n') %>')
-		        </script>
-		      </div> <!-- end col -->
-		      <div class="col-md-2">
-		      <input name="commit" class="btn btn-secondary" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
-		      </div>
-	        </div> <!-- end row for example -->
-	        <% end # code_array.each %>
-	        <% end # category_map.each %>
-	      </div>  <!-- end tabpane -->
-
-	    <% end # code_map.each%>
-	    
-	    </div> <!-- end tabcontent --> 
-	  
-  	</div><!-- end col -->
-  </div> <!-- end row -->
 </div> <!-- end container -->
