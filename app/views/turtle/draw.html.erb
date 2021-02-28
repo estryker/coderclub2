@@ -1,80 +1,4 @@
-<script>
-  // inject code to the code text area
-  function injectCode(extra_code) {
-    myCodeMirror.setValue(myCodeMirror.getValue() + "\n" + extra_code);
-  }
-</script>
-
-<div class="container">
-  <div class="page-header"><h1>Ruby Turtle!</h1></div>
-  
-  <div class="row" id="wrapper">
-    <div id="editor_wrapper" class="col-md-6"> 
-      <%= form_tag('/turtle/draw/save', method: 'post') do    -%> 
-      <textarea cols="50" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
-      <!-- First CodeMirror for the actual editor-->
-      <script> 
-      function codeMirrorLoaded(){
-	  console.log("code mirror loaded");
-	}
-  var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "text/x-ruby", matchBrackets: true, indentUnit: 2, 
-                                                   lineNumbers: true, theme: "rubyblue", onLoad: codeMirrorLoaded()});
-  myCodeMirror.setSize(500,400);
-  myCodeMirror.refresh()
-      
-      </script>
-      <!-- Second CodeMirror for all examples in help 
-      <script> 
-	$('example').each(function() {
-        var $this = $(this),
-        $example = $this.html();
- 
-        $this.empty();
-	
-        var examplesCodeMirror = CodeMirror.fromTextArea(this, {
-        value: $example,
-	mode: "ruby", 
-        lineNumbers: true, 
-        theme: "midnight",
-        readOnly: true
-        });
-        });
-      </script>
-      -->
-      <script>
-        // call this each time a piece of code is run so that new code doesn't appear below an old URL
-        function eraseFlash() {
-          flash = document.getElementById("flash_message");
-          if(flash != null) {
-          flash.innerHTML = "";
-          }
-        }
-      </script>
-  
-     <!-- onclick="Opal.Opal.$turtle_exec(my CodeMirror.getValue()); eraseFlash()" -->
-      <input id="runTurtleCode" name="commit" class="btn btn-primary"  type="button" value="Draw! " />
-     <%= submit_tag("Create URL", class: 'btn', type: 'submit')  %> 
-     <% end -%>
-    </div>
-
-    <div class="col-md-6">
-      <div role="tabpanel">
-	
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active" ><a href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">Drawing</a></li>
-          <li role="presentation" ><a href="#examples-tab" aria-controls="examples-tab" role="tab" data-toggle="tab">Examples</a></li>
-        </ul>
-	
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="canvas-tab">
-            <div id="output" class="well" style="padding:0">
-              <canvas id="mycanvas" height="500" width="800"> </canvas>
-            </div>
-          </div>
-	  
-	  <% 
+<% 
 	     turtle_map = { 
 	     "Polygons" => 
 	  [
@@ -186,8 +110,35 @@ end
 	  }
 	  %>
 
-	  <div role="tabpanel" class="tab-pane" id="examples-tab">
-            <% turtle_map.each do | category, code_array | %>
+<script>
+  // inject code to the code text area
+  function injectCode(extra_code) {
+    myCodeMirror.setValue(myCodeMirror.getValue() + "\n" + extra_code);
+  }
+</script>
+<script> 
+  $(function () {
+    dialog = $( "#help-form" ).dialog({
+        autoOpen: false,
+        height: 800,
+        width: 1000,
+        modal: true,
+        buttons: {
+          
+          Close: function() {
+            dialog.dialog( "close" );
+          }
+        }
+      }); 
+      function helpModal() {       
+        dialog.dialog("open");
+        return true;
+      } 
+      $( "#turtleHelp" ).button().on( "click", helpModal); 
+  });
+</script>
+<div id="help-form" title="Help">
+   <% turtle_map.each do | category, code_array | %>
 	    <h3> <%= category %> </h3> 
 	    <% code_array.each do | code_snippet | 
 	       div_id = "code_example_#{code_snippet.object_id}" %>
@@ -203,15 +154,75 @@ end
 		</script>
 	      </div>
 	      <div class="col-md-2">
-		<input name="commit" class="btn" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
+		<input name="commit" class="btn btn-secondary" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
 	      </div>
 	    </div> <!-- end row for example -->
 	    <% end # code_array.each %>
 	    <% end # turtle_map.each %>
-	  </div>  <!-- end tabpanel -->
-	  
-	</div>
-      </div>
+     
+</div>
+<div class="container">
+  <div class="page-header"><h1>Ruby Turtle!</h1></div>
+  
+  <div class="row" id="wrapper">
+    <div id="editor_wrapper" class="col-md-6"> 
+      <%= form_tag('/turtle/draw/save', method: 'post') do    -%> 
+      <textarea cols="50" class="well" style="padding:0" id="code" name="code" rows="10"><%= @code %></textarea>
+
+    </div>
+    <div class="col-md-6 " style="height: 450px; overflow-y: auto;">
+	     <h2> Drawing: </h2> 
+       <div id="output" class="well" style="padding:0">
+         <canvas id="mycanvas" height="450px" width="800px"> </canvas>
+       </div>
+    </div>
+      <!-- First CodeMirror for the actual editor-->
+      <script> 
+      function codeMirrorLoaded(){
+	  console.log("code mirror loaded");
+	}
+  var myCodeMirror = CodeMirror.fromTextArea(code, {mode: "text/x-ruby", matchBrackets: true, indentUnit: 2, 
+                                                   lineNumbers: true, theme: "rubyblue", onLoad: codeMirrorLoaded()});
+  myCodeMirror.setSize(500,400);
+  myCodeMirror.refresh()
+      
+      </script>
+      <!-- Second CodeMirror for all examples in help 
+      <script> 
+	$('example').each(function() {
+        var $this = $(this),
+        $example = $this.html();
+ 
+        $this.empty();
+	
+        var examplesCodeMirror = CodeMirror.fromTextArea(this, {
+        value: $example,
+	mode: "ruby", 
+        lineNumbers: true, 
+        theme: "midnight",
+        readOnly: true
+        });
+        });
+      </script>
+      -->
+      <script>
+        // call this each time a piece of code is run so that new code doesn't appear below an old URL
+        function eraseFlash() {
+          flash = document.getElementById("flash_message");
+          if(flash != null) {
+          flash.innerHTML = "";
+          }
+        }
+      </script>
+   
+    <div class="row" id="wrapper">
+      <!-- onclick="Opal.Opal.$turtle_exec(my CodeMirror.getValue()); eraseFlash()" -->
+      <input id="runTurtleCode" name="commit" class="btn btn-primary"  type="button" value="Draw! " />
+      <%= submit_tag("Create URL", class: 'btn btn-secondary', type: 'submit')  %>  
+      <input id="turtleHelp" class="btn btn-secondary"  type="button" value="Help " />
+      <% end -%> <!-- end form tag -->
+    </div>
+
     </div> 
     <div id="code_output">
     </div>
