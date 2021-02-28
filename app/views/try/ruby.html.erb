@@ -198,6 +198,7 @@ $(function () {
       }); 
       function helpModal() {
          var curr_div = document.getElementById("helpContent");
+         console.log("in help modal");
          // clear the innner HTML just in case the user brings up the dialog more than once
          curr_div.innerHTML = `
          <div class='container'>
@@ -210,13 +211,40 @@ $(function () {
 		
 	      	<h3> More advanced Ruby </h3>
 	      	Once you get through the examples and you want to learn more, try using some of the 'Ruby links' in the links tab at the top of the page. 
-          </div>;
+        </div>
           `
-         curr_div.innerHTML += <%= 
+         <% code_map.each do |tab, category_map| %> 
+         <% category_map.each do | category, code_array | %>
+	       curr_div.innerHTML +=  "<h3>" +  <%= category %> +"</h3>"
+	        <% code_array.each do | code_snippet | 
+	          div_id = "code_example_#{code_snippet.object_id}" %>
+          curr_div.innerHTML += `
+           <div class="row">
+		        <div class="col-md-8">
+		        <pre> 
+            <code>
+            ` + 
+            <%= code_snippet %>
+            + `
+            </code>
+		        </pre>
+          
+		        <script>
+		        code_string_` + <%=code_snippet.object_id %> + "=" + '<%= raw code_snippet.gsub("\n",'\n') %>'
+            console.log('<%= raw code_snippet.gsub("\n",'\n') %>')
+            curr_div.innerHTML += `
+		        </script>
+		      </div> <!-- end col -->
+		      <div class="col-md-2">
+		      <input name="commit" class="btn btn-secondary" onclick=" injectCode(code_string_<%= code_snippet.object_id %>); " type="button" value="Inject code" />
+		      </div>
+          </div> <!-- end row for example -->
+          `
+	        <% end # code_array.each %>
+	        <% end # category_map.each %>
          
          
-         
-         %>
+           <% end # code_map %>
          dialog.dialog("open");
         return true;
       } 
