@@ -78,3 +78,7 @@ gem 'opal-browser'
 gem 'high_voltage', '~>3.1'
 gem 'markdown-rails'
 
+gem 'github_api'
+gem 'omniauth'
+gem 'omniauth-github'
+
