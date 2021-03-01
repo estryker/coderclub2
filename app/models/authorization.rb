@@ -68,7 +68,7 @@ class Authorization < ActiveRecord::Base
       # puts user.inspect
 
       # only add the email if it is not nil, b/c of the regex checker
-      user.email = auth_hash["info"]["email"] if auth_hash["info"].has_key?("email") and not auth_hash["info"]["email"].empty?
+      user.email = auth_hash["info"]["email"] if auth_hash["info"].has_key?("email") and not (auth_hash["info"]["email"].nil? or auth_hash["info"]["email"].empty?)
 
       puts user.inspect
 
