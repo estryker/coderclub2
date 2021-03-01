@@ -35,6 +35,11 @@ Rails.application.routes.draw do
   delete '/signout/:provider', :to => 'sessions#destroy'
 
   get   '/login', :to => 'sessions#new', :as => :login
+
+  # For omniauth callback
+  # Note that the /auth/github route is created by the middleware
+  # https://medium.com/@woodpecker21/rails-6-how-to-implement-a-sign-in-with-github-ede6899cdf69
+  # https://gist.github.com/biglovisa/aaf4099e5f8b4817dafb
   match '/auth/:provider/callback', :to => 'sessions#create', via: [:get,:post]
 
   match '/auth/failure', :to => 'sessions#failure', via: [:get,:post]

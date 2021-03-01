@@ -1,3 +1,4 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "user,repo,gist"
+  # This will add the invisible route of /auth/github as well
+  provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'] #, scope: "user,repo,gist"
 end

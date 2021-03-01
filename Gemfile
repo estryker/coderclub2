@@ -79,6 +79,8 @@ gem 'high_voltage', '~>3.1'
 gem 'markdown-rails'
 
 gem 'github_api'
-gem 'omniauth'
-gem 'omniauth-github'
+gem 'omniauth', '1.5'
+
+# **Note that v 2.0 didn't give me an /auth/github path
+gem 'omniauth-github', '1.4.0'
 
