@@ -163,7 +163,7 @@ end
 </div>
 <div class="container">
   <div class="page-header"><h1>Ruby Turtle!</h1></div>
-  
+  <hr />
   <div class="row" id="wrapper">
     <div id="editor_wrapper" class="col-md-6"> 
       <%= form_tag('/turtle/draw/save', method: 'post') do    -%> 
@@ -214,16 +214,17 @@ end
           }
         }
       </script>
-   
+   </div> 
     <div class="row" id="wrapper">
       <!-- onclick="Opal.Opal.$turtle_exec(my CodeMirror.getValue()); eraseFlash()" -->
       <input id="runTurtleCode" name="commit" class="btn btn-primary"  type="button" value="Draw! " />
       <%= submit_tag("Create URL", class: 'btn btn-secondary', type: 'submit')  %>  
       <input id="turtleHelp" class="btn btn-secondary"  type="button" value="Help " />
-      <% end -%> <!-- end form tag -->
+     
     </div>
-
-    </div> 
+    
+    
+     <% end -%> <!-- end form tag -->
     <div id="code_output">
     </div>
   </div>
