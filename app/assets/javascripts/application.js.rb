@@ -17,7 +17,7 @@ require 'console'
 
 require 'try'
 
-require 'jquery3'
+require 'jquery'
 require 'popper'
 require 'bootstrap-sprockets'
 # a Ruby equivalent of the require_tree Sprockets directive is available
