@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <!-- screw the asset pipeline and sass -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.1/umd/popper.min.js" ></script>
   
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -26,13 +23,12 @@
         background-image: url(<%= asset_path "grey_computer_code.png" %>);
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-size: cover;
+        background-size: cover; 
     }
 </style>
 
   <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
     <div class="navbar-header">
       <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle navigation</span>
@@ -72,13 +68,10 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="http://kidsruby.com/"> Kids Ruby </a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="http://tryruby.org">Try Ruby</a>
-            <a class="dropdown-item" href="http://opalrb.org/try/#">Try Ruby2</a>
+            <a class="dropdown-item" href="https://try.ruby-lang.org/">Try Ruby</a>
+            <a class="dropdown-item" href="https://opalrb.com/try/">Try Opal Ruby</a>
             <a class="dropdown-item" href="http://www.tutorialspoint.com/ruby/index.htm">Ruby Tutorial</a>
-            <a class="dropdown-item" href="http://jruby.org/tryjruby">JRuby Applet</a>
-            
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="https://www.bloc.io/ruby-warrior/#/">Ruby Warrior Game</a>
+            <a class="dropdown-item" href="https://stackify.com/ruby-tutorials/">Top 30 Ruby Tutorials</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="http://ruby-doc.org/">Ruby Documentation </a>
           </div>
