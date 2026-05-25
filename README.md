@@ -18,16 +18,25 @@ bundle update --bundler
 ```
  sudo apt install postgresql postgresql-contrib
  ```
-
 1. create the database user in postgress
 ```
-
+sudo -u postgres createuser -s coderclub2 -P
 ```
 1. Setup the database:
 
  To initialize a database in Ruby on Rails, the standard commands are 
- ``` bin/rails db:create```, ```bin/rails db:migrate```, and ```bin/rails db:seed```. You can also use "all-in-one" commands like ```bin/rails db:setup ``` or ```bin/rails db:prepare``` depending on your specific needs.Primary Initialization CommandsFor a fresh project, these steps are typically run in sequence:bin/rails db:create: Creates the database based on your config/database.yml settings.bin/rails db:migrate: Executes all pending migration files in the db/migrate directory to build your database tables and columns.bin/rails db:seed: Populates the database with initial or sample data defined in the db/seeds.rb file.
-
+ ``` bin/rails db:create```, ```bin/rails db:migrate```, and ```bin/rails db:seed```. You can also use "all-in-one" commands like ```bin/rails db:setup ``` or ```bin/rails db:prepare``` depending on your specific needs.
+ 
+ Primary Initialization CommandsFor a fresh project, these steps are typically run in sequence:
+ ```bin/rails db:create ``` Creates the database based on your config/database.yml settings.
+ ```bin/rails  db:migrate ``` Executes all pending migration files in the db/migrate directory to build your database tables and columns.
+ ```bin/rails db:seed ``` Populates the database with initial or sample data defined in the db/seeds.rb file.
+1. setup the sudo vim /etc/postgresql/16/main/pg_hba.conf file to not use peer authentication 
+```
+local   all             all                                     scram-sha-256
+```
+1. restart postgress:  ```sudo systemctl restart postgresql```
+1. run with: ```bundle exec rails server```
 
 ### TODO
 * Containerize
