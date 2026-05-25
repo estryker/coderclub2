@@ -3,7 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby '2.7.2'
 # ruby '3.1.2'
-ruby '4.0.5'
+# ruby '4.0.5'
+ruby '3.4.9'
 
 gem 'mutex_m'
 gem 'tsort'
@@ -11,6 +12,12 @@ gem 'benchmark'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0'
+
+group :test do
+  gem 'minitest', '5.15.0' # Replace with your desired version
+end
+
+
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 # Use Puma as the app server

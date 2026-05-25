@@ -88,7 +88,6 @@ GEM
     date (3.5.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    drb (2.2.3)
     erubi (1.13.1)
     faraday (1.10.5)
       faraday-em_http (~> 1.0)
@@ -162,9 +161,7 @@ GEM
     matrix (0.4.3)
     method_source (1.1.0)
     mini_mime (1.1.5)
-    minitest (6.0.6)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.15.0)
     msgpack (1.8.0)
     multi_json (1.21.1)
     multi_xml (0.9.1)
@@ -223,7 +220,6 @@ GEM
     pg (1.6.3)
     pg (1.6.3-x86_64-linux)
     popper_js (2.11.8)
-    prism (1.9.0)
     public_suffix (7.0.5)
     puma (5.6.9)
       nio4r (~> 2.0)
@@ -321,7 +317,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.8.1)
+    zeitwerk (2.8.2)
 
 PLATFORMS
   x86_64-linux
@@ -339,6 +335,7 @@ DEPENDENCIES
   jquery-ui-rails
   listen (~> 3.3)
   markdown-rails
+  minitest (= 5.15.0)
   mutex_m
   omniauth (= 1.5)
   omniauth-github (= 1.4.0)
@@ -361,7 +358,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-  ruby 4.0.5
+   ruby 3.4.9p82
 
 BUNDLED WITH
-  4.0.12
+   2.6.9
