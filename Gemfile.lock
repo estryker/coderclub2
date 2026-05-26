@@ -88,6 +88,7 @@ GEM
     date (3.5.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    drb (2.2.3)
     erubi (1.13.1)
     faraday (1.10.5)
       faraday-em_http (~> 1.0)
@@ -328,6 +329,7 @@ DEPENDENCIES
   bootstrap
   byebug
   capybara (>= 3.26)
+  drb
   github_api
   high_voltage (~> 3.1)
   jbuilder (~> 2.7)

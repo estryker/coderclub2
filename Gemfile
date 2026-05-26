@@ -17,6 +17,7 @@ group :test do
   gem 'minitest', '5.15.0' # Replace with your desired version
 end
 
+gem 'drb'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
